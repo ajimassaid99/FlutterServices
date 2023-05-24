@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:services/app/modules/product/views/Product_view.dart';
 import 'package:services/app/routes/app_pages.dart';
 
 class DashboardWidget extends StatelessWidget {
@@ -93,7 +94,7 @@ final List<Map<String, String>> technicians = [
         ),
         TextButton(
           onPressed: () {
-            Navigator.pushNamed(context, Routes.Welcome);
+            Navigator.pushNamed(context, Routes.Product);
           },
           child: const Text(
             'Show All >>',
@@ -108,39 +109,50 @@ final List<Map<String, String>> technicians = [
     ),
     // Widget untuk menampilkan ListView
     SizedBox(
-      height: 180,
-      child: ListView.builder(
-        physics: const BouncingScrollPhysics(),
-        scrollDirection: Axis.horizontal,
-        itemCount: products.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(2),
-                  child: Image.asset(
-                    products[index]['image']!,
-                    width: 144,
-                    height: 134,
-                    fit: BoxFit.cover,
+          height: 180,
+          child: ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+            itemCount: products.length,
+            itemBuilder: (BuildContext context, int index) {
+              return  GestureDetector(
+                  onTap: () {
+                    if(products[index]['title']=="Air Conditioner"){
+                    Navigator.pushNamed(context, Routes.ProductAc);
+                    }else if(products[index]['title']=="Stove"){
+                      Navigator.pushNamed(context, Routes.ProductSt);
+                    }else if(products[index]['title']=="Washing Machine"){
+                      Navigator.pushNamed(context, Routes.ProductWm);
+                    }
+                  },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Column(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(2),
+                        child: Image.asset(
+                          products[index]['image']!,
+                          width: 144,
+                          height: 134,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        products[index]['title']!,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      )
+                    ],
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  products[index]['title']!,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 16),
-                )
-              ],
-            ),
-          );
-        },
-      ),
-    ),
+              );
+            },
+          ),
+        ),
     const SizedBox(height: 10,),
     const Text(
           ' Chat Technicians',

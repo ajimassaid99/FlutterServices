@@ -6,6 +6,8 @@ import '../modules/Register/views/Register_view.dart';
 import '../modules/Welcome/bindings/Welcome_binding.dart';
 import '../modules/Welcome/views/Welcome_view.dart';
 import '../modules/dashboard/views/Home_view.dart';
+import '../modules/product/bindings/Product_binding.dart';
+import '../modules/product/views/Product_view.dart';
 
 part 'app_routes.dart';
 
@@ -32,8 +34,28 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.Dasboard,
-      page: () => MyHomePage(),
+      page: () => const MyHomePage(),
       binding: LoginBinding(),
+    ),
+    GetPage(
+      name: _Paths.Product,
+      page: () => ProductView(type: "all",),
+      binding: ProductBinding(),
+    ),
+    GetPage(
+      name: _Paths.Productac,
+      page: () => ProductView(type: "Air Conditioner",),
+      binding: ProductBinding(),
+    ),
+    GetPage(
+      name: _Paths.ProductSt,
+      page: () => ProductView(type: "Stove",),
+      binding: ProductBinding(),
+    ),
+    GetPage(
+      name: _Paths.ProductWm,
+      page: () => ProductView(type: "Washing Machine",),
+      binding: ProductBinding(),
     ),
     
   ];
