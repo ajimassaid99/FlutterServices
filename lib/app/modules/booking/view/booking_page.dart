@@ -22,6 +22,14 @@ class BookingPage extends GetView<BookingController> {
 ];
   String _selectedKecamatan = 'Kecamatan 1';
 
+  final List<String> teknisiList = [
+  'Kaka',
+  'Eneng',
+  'Putri',
+  'Andaresta',
+];
+  String _selectedTeknisi = 'Kaka';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,20 +118,20 @@ class BookingPage extends GetView<BookingController> {
                   decoration: const InputDecoration(
                     labelText: 'Teknisi',
                   ),
-                  value: _selectedKecamatan,
-                  onChanged: (newValue) {
-                    _selectedKecamatan = newValue!;
+                  value: _selectedTeknisi,
+                  onChanged: (newValue1) {
+                    _selectedTeknisi = newValue1!;
                   },
                   validator: (value) {
                     if (value == null) {
-                      return 'Kecamatan is required';
+                      return 'Teknisi is required';
                     }
                     return null;
                   },
-                  items: kecamatanList.map((kecamatan) {
+                  items: teknisiList.map((teknisi) {
                     return DropdownMenuItem<String>(
-                      value: kecamatan,
-                      child: Text(kecamatan),
+                      value: teknisi,
+                      child: Text(teknisi),
                     );
                   }).toList(),
                 ),
