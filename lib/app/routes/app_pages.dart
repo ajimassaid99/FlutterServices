@@ -5,6 +5,8 @@ import '../modules/Register/bindings/home_binding.dart';
 import '../modules/Register/views/Register_view.dart';
 import '../modules/Welcome/bindings/Welcome_binding.dart';
 import '../modules/Welcome/views/Welcome_view.dart';
+import '../modules/booking/binding/booking_bindings.dart';
+import '../modules/booking/view/booking_page.dart';
 import '../modules/dashboard/views/Home_view.dart';
 import '../modules/product/bindings/Product_binding.dart';
 import '../modules/product/views/Product_view.dart';
@@ -56,6 +58,11 @@ class AppPages {
       name: _Paths.ProductWm,
       page: () => ProductView(type: "Washing Machine",),
       binding: ProductBinding(),
+    ),
+    GetPage(
+      name: _Paths.Booking,
+      page: () => BookingPage(),
+      binding: BookingBinding(),
     ),
     
   ];

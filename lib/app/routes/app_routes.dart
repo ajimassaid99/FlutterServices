@@ -11,6 +11,7 @@ abstract class Routes {
   static const ProductAc = _Paths.Productac;
   static const ProductSt = _Paths.ProductSt;
   static const ProductWm = _Paths.ProductWm;
+  static const Booking = _Paths.Booking;
 }
 
 abstract class _Paths {
@@ -22,5 +23,6 @@ abstract class _Paths {
   static const Product = '/product'; 
   static const Productac = '/productac';
   static const ProductSt = '/productst';
-  static const ProductWm = '/productwm';    
+  static const ProductWm = '/productwm'; 
+  static const Booking = '/booking';    
 }

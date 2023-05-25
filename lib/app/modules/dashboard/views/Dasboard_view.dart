@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:services/app/modules/product/views/Product_view.dart';
 import 'package:services/app/routes/app_pages.dart';
 
 class DashboardWidget extends StatelessWidget {

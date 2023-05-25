@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../routes/app_pages.dart';
 import '../controllers/Product_controller.dart';
 
 // ignore: must_be_immutable
@@ -8,7 +9,6 @@ class ProductView extends GetView<ProductController> {
   String type;
   ProductView({Key? key, required this.type}) : super(key: key);
 
-  @override
   void initState() {
     controller.getProducts(this.type);
   }
@@ -118,7 +118,9 @@ class ProductView extends GetView<ProductController> {
                                 const SizedBox(height: 10),
                                 // Widget untuk menampilkan tombol "Beli"
                                 ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Get.toNamed('${Routes.Booking}?product_id=${product["product_id"]}');
+                                  },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor:
                                         Colors.black, // warna latar belakang
