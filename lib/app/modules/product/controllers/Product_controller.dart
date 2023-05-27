@@ -9,6 +9,7 @@ class ProductController extends GetxController {
 
   Future<void> getProducts(String type) async {
     if(type=="all"){
+      products = <Map<String, dynamic>>[].obs;
         final response = await Supabase.instance.client
         .from('products')
         .select('product_id, merk, type, name, urlImage');

@@ -5,33 +5,24 @@ import '../controller/booking_controller.dart';
 class BookingPage extends GetView<BookingController> {
   BookingPage({Key? key}) : super(key: key);
 
-  final productType = Get.parameters['product_id'];
+  final productId = Get.parameters['product_id'];
+  final String productType = Get.parameters['type']!;
   final _formKey = GlobalKey<FormState>();
   final _namaController = TextEditingController();
   final _phoneController = TextEditingController();
   final _addresController = TextEditingController();
   final _amountController = TextEditingController();
-  
-  
 
-  final List<String> kecamatanList = [
-  'Kecamatan 1',
-  'Kecamatan 2',
-  'Kecamatan 3',
-  'Kecamatan 4',
-];
-  String _selectedKecamatan = 'Kecamatan 1';
-
-  final List<String> teknisiList = [
-  'Kaka',
-  'Eneng',
-  'Putri',
-  'Andaresta',
-];
-  String _selectedTeknisi = 'Kaka';
+  @override
+void initState() {
+  controller.fetchTeknisi(productType!).then((_) {
+    // operasi lainnya
+  });
+}
 
   @override
   Widget build(BuildContext context) {
+    initState();
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -80,61 +71,67 @@ class BookingPage extends GetView<BookingController> {
                   },
                 ),
                 const SizedBox(height: 16.0),
-                DropdownButtonFormField<String>(
-                  decoration: const InputDecoration(
-                    labelText: 'Kecamatan',
-                  ),
-                  value: _selectedKecamatan,
-                  onChanged: (newValue) {
-                    _selectedKecamatan = newValue!;
-                  },
-                  validator: (value) {
-                    if (value == null) {
-                      return 'Kecamatan is required';
-                    }
-                    return null;
-                  },
-                  items: kecamatanList.map((kecamatan) {
-                    return DropdownMenuItem<String>(
-                      value: kecamatan,
-                      child: Text(kecamatan),
-                    );
-                  }).toList(),
-                ),
-                TextFormField(
-                  controller: _addresController,
-                  keyboardType: TextInputType.multiline,
-                  decoration: const InputDecoration(
-                    labelText: 'Addres',
-                  ),
-                  validator: (value) {
-                    if (value == '') {
-                      return 'Addres is required';
-                    }
-                    return null;
-                  },
-                ),
-                DropdownButtonFormField<String>(
-                  decoration: const InputDecoration(
-                    labelText: 'Teknisi',
-                  ),
-                  value: _selectedTeknisi,
-                  onChanged: (newValue1) {
-                    _selectedTeknisi = newValue1!;
-                  },
-                  validator: (value) {
-                    if (value == null) {
-                      return 'Teknisi is required';
-                    }
-                    return null;
-                  },
-                  items: teknisiList.map((teknisi) {
-                    return DropdownMenuItem<String>(
-                      value: teknisi,
-                      child: Text(teknisi),
-                    );
-                  }).toList(),
-                ),
+                Obx(() {
+                  return Column(
+                    children: [
+                      DropdownButtonFormField<int>(
+                        decoration: const InputDecoration(
+                          labelText: 'Kecamatan',
+                        ),
+                        value: controller.selectedKecamatan.value,
+                        onChanged: (newValue) {
+                          controller.selectedKecamatan.value = newValue!;
+                        },
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Kecamatan is required';
+                          }
+                          return null;
+                        },
+                        items: controller.kecamatanList.map((kecamatan) {
+                          return DropdownMenuItem<int>(
+                            value: kecamatan['fee'],
+                            child: Text(kecamatan['nama_kecamatan']),
+                          );
+                        }).toList(),
+                      ),
+                      TextFormField(
+                        controller: _addresController,
+                        keyboardType: TextInputType.multiline,
+                        decoration: const InputDecoration(
+                          labelText: 'Addres',
+                        ),
+                        validator: (value) {
+                          if (value == '') {
+                            return 'Addres is required';
+                          }
+                          return null;
+                        },
+                      ),
+                      DropdownButtonFormField<int>(
+                        decoration: const InputDecoration(
+                          labelText: 'Teknisi',
+                        ),
+                        value: controller.selectedTeknisi.value,
+                        onChanged: (newValue) {
+                          controller.selectedTeknisi.value = newValue!;
+                        },
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Kecamatan is required';
+                          }
+                          return null;
+                        },
+                        items: controller.teknisiList.map((t) {
+                          return DropdownMenuItem<int>(
+                            value: t['id'],
+                            child: Text(t['name']),
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  );
+                }),
                 TextFormField(
                   controller: _amountController,
                   obscureText: true,

@@ -2,8 +2,8 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class DashboardController extends GetxController {
-  
+class DashboardController extends GetxController {  
+
   Future<void> Dashboard({
     required String email,
     required String password,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/Product_controller.dart';
 
@@ -118,8 +118,17 @@ class ProductView extends GetView<ProductController> {
                                 const SizedBox(height: 10),
                                 // Widget untuk menampilkan tombol "Beli"
                                 ElevatedButton(
-                                  onPressed: () {
-                                    Get.toNamed('${Routes.Booking}?product_id=${product["product_id"]}');
+                                  onPressed: () async {
+                                    final prefs = await SharedPreferences.getInstance();
+                                    final userId = await prefs.getString('userId');
+                                    if (context.mounted){  
+                                      if (userId == null){
+                                        Get.toNamed(Routes.EmptyUser);
+                                      }
+                                      else{
+                                      Get.toNamed('${Routes.Booking}?product_id=${product["product_id"].toString()}&type=${product["type"]}');
+                                      }
+                                    }
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor:

@@ -17,10 +17,10 @@ class LoginController extends GetxController {
 
     if (response.isNotEmpty) {
       
-      final userId = response[0]['id'];
+      final userId = response[0]['id'].toString();
 
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('userId', userId);
+    await prefs.setString('userId', userId);
     Get.snackbar('Berhasil', 'Login Berhasil');
     // Redirect to home screen
     Get.offAllNamed('/dasboard');

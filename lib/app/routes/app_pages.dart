@@ -8,6 +8,8 @@ import '../modules/Welcome/views/Welcome_view.dart';
 import '../modules/booking/binding/booking_bindings.dart';
 import '../modules/booking/view/booking_page.dart';
 import '../modules/dashboard/views/Home_view.dart';
+import '../modules/emptyUser/emptyUser_bindings.dart';
+import '../modules/emptyUser/emptyUser_page.dart';
 import '../modules/product/bindings/Product_binding.dart';
 import '../modules/product/views/Product_view.dart';
 
@@ -63,6 +65,11 @@ class AppPages {
       name: _Paths.Booking,
       page: () => BookingPage(),
       binding: BookingBinding(),
+    ),
+    GetPage(
+      name: _Paths.EmptyUser,
+      page: () => EmptyUserPage(),
+      binding: EmptyUserBindings(),
     ),
     
   ];
