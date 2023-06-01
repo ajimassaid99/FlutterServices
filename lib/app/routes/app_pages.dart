@@ -7,6 +7,7 @@ import '../modules/Welcome/bindings/Welcome_binding.dart';
 import '../modules/Welcome/views/Welcome_view.dart';
 import '../modules/booking/binding/booking_bindings.dart';
 import '../modules/booking/view/booking_page.dart';
+import '../modules/dashboard/bindings/Dashboard_binding.dart';
 import '../modules/dashboard/views/Home_view.dart';
 import '../modules/emptyUser/emptyUser_bindings.dart';
 import '../modules/emptyUser/emptyUser_page.dart';
@@ -39,7 +40,7 @@ class AppPages {
     GetPage(
       name: _Paths.Dasboard,
       page: () => const MyHomePage(),
-      binding: LoginBinding(),
+      binding: DashboardBinding(),
     ),
     GetPage(
       name: _Paths.Product,

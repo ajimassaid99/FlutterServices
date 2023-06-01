@@ -2,31 +2,27 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class DashboardController extends GetxController {  
+class DashboardController extends GetxController { 
+  @override
+  void onInit() {
+    fetchUser(); 
+  }
+  
+RxList<Map<String, dynamic>> User = <Map<String, dynamic>>[].obs;
+  
+  void fetchUser()async{
+    final prefs = await SharedPreferences.getInstance();
+    final User_id =await prefs.getInt('userId');
 
-  Future<void> Dashboard({
-    required String email,
-    required String password,
-  }) async {
+    User.value =[];
+
     final List response = await Supabase.instance.client
         .from('user')
-        .select('id')
-        .eq('email', email)
-        .eq('password', password);
-        print(response.length);
-
-    if (response.isNotEmpty) {
-      
-      final userId = response[0]['id'];
-
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('userId', userId);
-    Get.snackbar('Berhasil', 'Dashboard Berhasil');
-    // Redirect to home screen
-    Get.offAllNamed('/home');
-      return;
-    }
-
-    Get.snackbar('Error', 'Email/Password Salah');
+        .select('*')
+        .eq('id', '16');
+    
+    print(response);
+    User..addAll(response.cast<Map<String, dynamic>>());
   }
+  
 }

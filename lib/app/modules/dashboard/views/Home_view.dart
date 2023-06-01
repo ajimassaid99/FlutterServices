@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:services/app/modules/Profile/views/Profile_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../routes/app_pages.dart';
 import '../../emptyUser/emptyUser_page.dart';
+import '../../riwayat/views/riwayat_view.dart';
 import 'Dasboard_view.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -50,35 +51,15 @@ class _MyHomePageState extends State<MyHomePage> {
             if (userId.value == null || userId.value.isEmpty) {
               return EmptyUserPage();
             } else {
-              return Center(
-                child: Text('Halaman Riwayat'),
-              );
+              
+              return RiwayatView();
             }
           }),
           Obx(() {
             if (userId.value == null || userId.value.isEmpty) {
               return EmptyUserPage();
             } else {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Halaman Profil'),
-                    SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () async {
-                        final prefs = await SharedPreferences.getInstance();
-                        await prefs.remove('userId');
-                        if (context.mounted) {
-                          Get.snackbar("Succes", "Berhasil Logout");
-                          Get.toNamed(Routes.Welcome);
-                        }
-                      },
-                      child: Text('Logout'),
-                    ),
-                  ],
-                ),
-              );
+              return ProfileView();
             }
           }),
           // Widget untuk halaman Profil

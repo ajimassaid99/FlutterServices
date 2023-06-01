@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:services/app/modules/booking/view/pembayaran_page.dart';
 import '../controller/booking_controller.dart';
+import 'package:intl/intl.dart';
 
 class BookingPage extends GetView<BookingController> {
   BookingPage({Key? key}) : super(key: key);
 
+  final formatIDR = new NumberFormat.currency(
+      locale: 'id_IDR', symbol: 'Rp ', decimalDigits: 0);
   final productId = Get.parameters['product_id'];
   final String productType = Get.parameters['type']!;
   final _formKey = GlobalKey<FormState>();
@@ -13,12 +17,11 @@ class BookingPage extends GetView<BookingController> {
   final _addresController = TextEditingController();
   final _amountController = TextEditingController();
 
-  @override
-void initState() {
-  controller.fetchTeknisi(productType!).then((_) {
-    // operasi lainnya
-  });
-}
+  void initState() {
+    controller.fetchTeknisi(productType!).then((_) {
+      // operasi lainnya
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +62,6 @@ void initState() {
                 const SizedBox(height: 16.0),
                 TextFormField(
                   controller: _phoneController,
-                  obscureText: true,
                   decoration: const InputDecoration(
                     labelText: 'No Telefon',
                   ),
@@ -129,40 +131,77 @@ void initState() {
                           );
                         }).toList(),
                       ),
+                      TextFormField(
+                        controller: _amountController,
+                        decoration: const InputDecoration(
+                          labelText: 'Amount',
+                        ),
+                        validator: (value) {
+                          if (value == '') {
+                            return 'Jumlah Harus lebih Dari 0';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 50.0),
+                      ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text('Konfirmasi Booking'),
+                                  content: Text(
+                                      'Apakah Anda yakin ingin melakukan booking dengan biaya teknisi datang sebesar \n ${formatIDR.format(controller.selectedKecamatan.value)}? \n Biaya jasa service belum termasuk.'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: Text('Batal'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop(false);
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: Text('Ya, Lanjutkan'),
+                                      onPressed: () async {
+                                        await controller.Booking(
+                                            product_id: int.parse(productId!),
+                                            teknisi_id: controller
+                                                .selectedTeknisi.value,
+                                            address: _addresController.text,
+                                            biaya: controller
+                                                .selectedKecamatan.value);
+                                        if (context.mounted) {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  PaymentSelectionView(),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                        ),
+                        child: const Text(
+                          'Booking',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                        ),
+                      ),
                     ],
                   );
                 }),
-                TextFormField(
-                  controller: _amountController,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: 'Amount',
-                  ),
-                  validator: (value) {
-                    if (value == '') {
-                      return 'Jumlah Harus lebih Dari 0';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 50.0),
-                ElevatedButton(
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      // Perform some action here
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                  ),
-                  child: const Text(
-                    'Booking',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20),
-                  ),
-                ),
               ],
             ),
           ),
