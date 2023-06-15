@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/Profile_controller.dart';
 
+// ignore: must_be_immutable
 class ProfileView extends GetView<ProfileController> {
   ProfileView({super.key});
 

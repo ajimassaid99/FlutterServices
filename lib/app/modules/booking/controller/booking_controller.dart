@@ -43,7 +43,8 @@ class BookingController extends GetxController {
       {required int product_id,
       required int teknisi_id,
       required String address,
-      required int biaya}) async {
+      required int biaya,
+      required String date}) async {
     final prefs = await SharedPreferences.getInstance();
     int user_id = int.parse(prefs.getString('userId')!);
 
@@ -53,7 +54,8 @@ class BookingController extends GetxController {
       'user_id': user_id,
       'addres': address,
       'biaya': biaya,
-      'status':'Menunggu Pembayaran'
+      'status': 'Menunggu Pembayaran',
+      'Tanggal': date
     });
     Get.snackbar('Berhasil', 'Booking Berhasil');
     // registration successful

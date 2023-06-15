@@ -16,11 +16,27 @@ class BookingPage extends GetView<BookingController> {
   final _phoneController = TextEditingController();
   final _addresController = TextEditingController();
   final _amountController = TextEditingController();
+  late DateTime _selectedDate;
+  final _dateController = TextEditingController();
 
   void initState() {
-    controller.fetchTeknisi(productType!).then((_) {
+    controller.fetchTeknisi(productType).then((_) {
       // operasi lainnya
     });
+    _selectedDate = DateTime.now();
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2050),
+    );
+    if (picked != null && picked != _selectedDate) {
+      _selectedDate = picked;
+      _dateController.text = DateFormat('dd MMM yyyy').format(picked);
+    }
   }
 
   @override
@@ -143,6 +159,21 @@ class BookingPage extends GetView<BookingController> {
                           return null;
                         },
                       ),
+                      TextFormField(
+                        controller: _dateController,
+                        readOnly: true,
+                        onTap: () => _selectDate(context),
+                        decoration: InputDecoration(
+                          labelText: 'Date Booking',
+                          suffixIcon: const Icon(Icons.calendar_today),
+                        ),
+                        validator: (value) {
+                          if (value == '') {
+                            return 'Date is required';
+                          }
+                          return null;
+                        },
+                      ),
                       const SizedBox(height: 50.0),
                       ElevatedButton(
                         onPressed: () {
@@ -170,7 +201,8 @@ class BookingPage extends GetView<BookingController> {
                                                 .selectedTeknisi.value,
                                             address: _addresController.text,
                                             biaya: controller
-                                                .selectedKecamatan.value);
+                                                .selectedKecamatan.value,
+                                                date: _dateController.text);
                                         if (context.mounted) {
                                           Navigator.push(
                                             context,

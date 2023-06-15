@@ -4,8 +4,6 @@ import 'package:get/get.dart';
 import '../controllers/Riwayat_controller.dart';
 
 class RiwayatView extends GetView<RiwayatController> {
- 
-
   void get() {
     Get.lazyPut<RiwayatController>(() => RiwayatController());
   }
@@ -16,8 +14,7 @@ class RiwayatView extends GetView<RiwayatController> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(0),
-        child: 
-        Column(
+        child: Column(
           children: [
             Container(
               color: Colors.black,
@@ -82,7 +79,7 @@ class RiwayatView extends GetView<RiwayatController> {
                                       ),
                                       const SizedBox(height: 8),
                                       Text(
-                                        'Tanggal: ${order["created_at"]}',
+                                        'Tanggal: ${order["Tanggal"]}',
                                         style: const TextStyle(fontSize: 14),
                                       ),
                                       const SizedBox(height: 8),
@@ -95,8 +92,12 @@ class RiwayatView extends GetView<RiwayatController> {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 4,),
-                            Divider(thickness: 3,),
+                            SizedBox(
+                              height: 4,
+                            ),
+                            Divider(
+                              thickness: 3,
+                            ),
                           ],
                         ),
                       );

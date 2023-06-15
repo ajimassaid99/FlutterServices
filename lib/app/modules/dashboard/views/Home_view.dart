@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:services/app/modules/Profile/views/Profile_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../routes/app_pages.dart';
 import '../../emptyUser/emptyUser_page.dart';
 import '../../riwayat/views/riwayat_view.dart';
 import 'Dasboard_view.dart';
@@ -48,16 +47,16 @@ class _MyHomePageState extends State<MyHomePage> {
           DashboardWidget(),
           // Widget untuk halaman Riwayat
           Obx(() {
-            if (userId.value == null || userId.value.isEmpty) {
-              return EmptyUserPage();
+            if (userId.value.isEmpty) {
+              return const EmptyUserPage();
             } else {
               
               return RiwayatView();
             }
           }),
           Obx(() {
-            if (userId.value == null || userId.value.isEmpty) {
-              return EmptyUserPage();
+            if ( userId.value.isEmpty) {
+              return const EmptyUserPage();
             } else {
               return ProfileView();
             }

@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -14,6 +13,7 @@ class ProfileController extends GetxController {
 
   @override
   void onInit() {
+    super.onInit();
     setProfileImagePath();
     loadProfileData();
   }

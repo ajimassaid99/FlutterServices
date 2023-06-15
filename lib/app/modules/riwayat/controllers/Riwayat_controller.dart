@@ -6,7 +6,8 @@ class RiwayatController extends GetxController {
   
 RxList<Map<String, dynamic>> Booking = <Map<String, dynamic>>[].obs;
 @override
-  void onInit() {    
+  void onInit() {
+    super.onInit();    
     fetchBooking(); 
   }
 

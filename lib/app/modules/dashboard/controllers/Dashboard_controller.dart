@@ -5,6 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class DashboardController extends GetxController { 
   @override
   void onInit() {
+    super.onInit();
     fetchUser(); 
   }
   
@@ -19,10 +20,9 @@ RxList<Map<String, dynamic>> User = <Map<String, dynamic>>[].obs;
     final List response = await Supabase.instance.client
         .from('user')
         .select('*')
-        .eq('id', '16');
+        .eq('id', User_id);
     
-    print(response);
-    User..addAll(response.cast<Map<String, dynamic>>());
+    User.addAll(response.cast<Map<String, dynamic>>());
   }
   
 }
