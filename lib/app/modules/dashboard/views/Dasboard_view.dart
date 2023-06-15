@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:services/app/routes/app_pages.dart';
 
+import 'Chat_view.dart';
+
 class DashboardWidget extends StatelessWidget {
   DashboardWidget({Key? key}) : super(key: key);
 
@@ -213,7 +215,11 @@ class DashboardWidget extends StatelessWidget {
                           padding: EdgeInsets.symmetric(horizontal: 20),
                           child: ElevatedButton(
                             onPressed: () {
-                              // aksi yang ingin dilakukan ketika tombol ditekan
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ChatPage(title:technicians[index]['name']! ,)),
+                              );
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.black,
