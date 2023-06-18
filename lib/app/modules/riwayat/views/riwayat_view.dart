@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../controllers/Riwayat_controller.dart';
 
@@ -11,6 +12,11 @@ class RiwayatView extends GetView<RiwayatController> {
   @override
   Widget build(BuildContext context) {
     get();
+     final currencyFormat = NumberFormat.currency(
+                                  locale: 'id_ID',
+                                  symbol: 'Rp ',
+                                  decimalDigits: 2,
+                                );
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(0),
@@ -38,6 +44,7 @@ class RiwayatView extends GetView<RiwayatController> {
                     itemCount: controller.Booking.length,
                     itemBuilder: (context, index) {
                       final order = controller.Booking[index];
+                       
                       return Container(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
@@ -80,6 +87,10 @@ class RiwayatView extends GetView<RiwayatController> {
                                       const SizedBox(height: 8),
                                       Text(
                                         'Tanggal: ${order["Tanggal"]}',
+                                        style: const TextStyle(fontSize: 14),
+                                      ),
+                                      Text(
+                                        'Biaya: ${currencyFormat.format(order["biaya"])}',
                                         style: const TextStyle(fontSize: 14),
                                       ),
                                       const SizedBox(height: 8),

@@ -16,11 +16,15 @@ class BookingPage extends GetView<BookingController> {
   final _phoneController = TextEditingController();
   final _addresController = TextEditingController();
   final _amountController = TextEditingController();
+  final _ListOfKerusakanController = TextEditingController();
   late DateTime _selectedDate;
   final _dateController = TextEditingController();
 
   void initState() {
     controller.fetchTeknisi(productType).then((_) {
+      // operasi lainnya
+    });
+    controller.fetchKerusakan(productType).then((_) {
       // operasi lainnya
     });
     _selectedDate = DateTime.now();
@@ -159,6 +163,25 @@ class BookingPage extends GetView<BookingController> {
                           return null;
                         },
                       ),
+                      Text(
+                        // ignore: invalid_use_of_protected_member
+                        controller.KerusakanList.map((kerusakan) =>
+                                '${kerusakan['id']}: ${kerusakan['nama_kerusakan']}')
+                            .join(', '),
+                      ),
+                      TextFormField(
+                        controller: _ListOfKerusakanController,
+                        decoration: const InputDecoration(
+                          labelText:
+                              'Masukan Kode Kerusakan pisahkan dengan tanda ,',
+                        ),
+                        validator: (value) {
+                          if (value == '') {
+                            return 'Jumlah Harus lebih Dari 0';
+                          }
+                          return null;
+                        },
+                      ),
                       TextFormField(
                         controller: _dateController,
                         readOnly: true,
@@ -178,13 +201,99 @@ class BookingPage extends GetView<BookingController> {
                       ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
+                            final kerusakanString =
+                                _ListOfKerusakanController.text;
+                            final kerusakanList = kerusakanString.split(',');
+                            final listOfInt =
+                                kerusakanList.map((e) => int.parse(e)).toList();
+                            var biayaJasa = 0;
+                            for (int id = 0; id < listOfInt.length; id++) {
+                              biayaJasa +=
+                                  controller.getBiayaById(listOfInt[id]);
+                            }
+                            biayaJasa =
+                                biayaJasa * int.parse(_amountController.text);
+                            
+                            var totalBiaya = controller.selectedKecamatan.value + biayaJasa;
+
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
+                                final currencyFormat = NumberFormat.currency(
+                                  locale: 'id_ID',
+                                  symbol: 'Rp ',
+                                  decimalDigits: 2,
+                                );
                                 return AlertDialog(
                                   title: Text('Konfirmasi Booking'),
-                                  content: Text(
-                                      'Apakah Anda yakin ingin melakukan booking dengan biaya teknisi datang sebesar \n ${formatIDR.format(controller.selectedKecamatan.value)}? \n Biaya jasa service belum termasuk.'),
+                                  content: Column(
+                                    children: [
+                                      Column(
+                                        children: [
+                                          for (int id = 0;
+                                              id < listOfInt.length;
+                                              id++)
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  '${controller.getnameById(listOfInt[id])}',
+                                                  style:
+                                                      TextStyle(fontSize: 16),
+                                                ),
+                                                Text(
+                                                  '${currencyFormat.format(controller.getBiayaById(listOfInt[id]))}',
+                                                  style:
+                                                      TextStyle(fontSize: 16),
+                                                ),
+                                              ],
+                                            ),
+                                        ],
+                                      ),
+                                      Divider(),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("Jumlah  "),
+                                          Text('${currencyFormat.format(biayaJasa/int.parse(_amountController.text))} x ${_amountController.text}'),
+                                        ],
+                                      ),
+                                      Divider(),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("Total Jasa"),
+                                          Text(
+                                              '${currencyFormat.format(biayaJasa)}',style: TextStyle(fontWeight:FontWeight.w600)),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("Biaya Kirim"),
+                                          Text(
+                                              '${currencyFormat.format(controller.selectedKecamatan.value)}' ,style: TextStyle(fontWeight:FontWeight.w600)),
+                                        ],
+                                      ),
+                                       Divider(),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("Total Biaya"),
+                                          Text(
+                                              '${currencyFormat.format(totalBiaya)}', style: TextStyle(fontWeight:FontWeight.bold),),
+                                        ],
+                                      ),
+                                      SizedBox(height: 20,),
+                                      Text("Apakah Anda Yakin Akan Memboking Seperti DI atas?")
+                                    ],
+                                  ),
                                   actions: <Widget>[
                                     TextButton(
                                       child: Text('Batal'),
@@ -196,13 +305,15 @@ class BookingPage extends GetView<BookingController> {
                                       child: Text('Ya, Lanjutkan'),
                                       onPressed: () async {
                                         await controller.Booking(
+                                            amount: int.parse(
+                                                _amountController.text),
                                             product_id: int.parse(productId!),
                                             teknisi_id: controller
                                                 .selectedTeknisi.value,
                                             address: _addresController.text,
-                                            biaya: controller
-                                                .selectedKecamatan.value,
-                                                date: _dateController.text);
+                                            biaya: totalBiaya,
+                                            date: _dateController.text,
+                                            kerusakan_id: listOfInt);
                                         if (context.mounted) {
                                           Navigator.push(
                                             context,
